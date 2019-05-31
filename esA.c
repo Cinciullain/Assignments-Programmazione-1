@@ -1,7 +1,7 @@
 #include <stdio.h>  
-#include <stdlib.h>
 
 #define NUMERO_FUNZIONI 5
+#define NUMERO_BIT 32 
 
 void nuovoNumero(int *numero);
 void stampaRappresentazioneC2(int *numero);
@@ -36,34 +36,13 @@ void nuovoNumero(int *numero){
 }
 
 void stampaRappresentazioneC2(int *numero){
-
-    char *rappresentazioneC2;
-    rappresentazioneC2 = malloc(sizeof(char)*36 + 1);
-    rappresentazioneC2[37] = '\0';
-    int i = 36;
 }
 
 void calcolaOpposto(int *numero){
-    printf("%d\n", - *numero);
+    printf("L\'opposto di %d e: -%d\n",*numero ,*numero);
 }
 
 void stampaRappresentazioneC2Opposto(int *numero){
-    int i = 0;
-    char *rappresentazioneC2;
-    rappresentazioneC2 = malloc(sizeof(char)*36 + 1);
-    rappresentazioneC2[37] = '\0';
-
-    while(rappresentazioneC2[i] != '\0'){
-        if(rappresentazioneC2[i] == '0')
-            rappresentazioneC2[i] = '1';
-        else
-            rappresentazioneC2[i] = '0';
-        
-        i++;
-    }
-
-    printf("%s", rappresentazioneC2);
-    
 }
 
 void esci(int *numero){

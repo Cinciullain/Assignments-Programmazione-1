@@ -53,14 +53,11 @@ int main(){
     }
     /*   FINE LETTURA      */
 
-    printf("stampa tutti i prodotti\n");
-    stampaLista(ProdottoPtr);
-
     /*   OPZIONI DELL'UTENTE   */
     int opzioneScelta = 0;                             
     int codiceProdotto = 0;                              
-    int soglia = 10;    //soglia (default 10)
-    void (*funzioniPtr[6])(ProdottoPtr*, int) = {cambiaQuantitaProdotto, cambiaPrezzoProdotto, nuovoProdotto, eliminaProdotto, cercaProdotto, stampaListaProdotti};    //array di puntatori a funzioni
+    int sogliaMinima = 10;  //Default: 10
+    void (*funzioniPtr[6])() = {cambiaQuantitaProdotto, cambiaPrezzoProdotto, nuovoProdotto, eliminaProdotto, cercaProdotto, stampaListaProdotti};  //Array di puntatori a funzioni
 
     do{
         //MENU' TESTUALE 
@@ -89,19 +86,19 @@ int main(){
         }
         else if(6 == opzioneScelta){
             printf("Inserisci la soglia:\n");
-            while(scanf("%d", &soglia)!= 1){
+            while(scanf("%d", &sogliaMinima)!= 1){
                 printf("Inserisci la soglia:\n");
                 while(getchar() != '\n');
             }
-            (*funzioniPtr[opzioneScelta - 1])(&ProdottoPtr, soglia);
+            (*funzioniPtr[opzioneScelta - 1])(&ProdottoPtr, sogliaMinima);
         }
     }while(opzioneScelta != 7);
 
     /*   UTENTE CHIEDE L'USCITA DAL PROGRAMMA      */
     int prodottiDisponibili = numeroProdottiDisponibili(ProdottoPtr, 0);
-    int prodottiSottoSogliaMinimaNumber = prodottiSottoSogliaMinima(ProdottoPtr,soglia, 0);    //numero di prodotti sotto soglia
+    int numeroProdottiSottoSogliaMinima = prodottiSottoSogliaMinima(ProdottoPtr,sogliaMinima, 0);    //numero di prodotti sotto soglia
     printf("Il numero totale di prodotti disponibili in magazzino e\': %d\n", prodottiDisponibili); 
-    printf("Il numero totale di prodotti sotto la soglia e\': %d\n", prodottiSottoSogliaMinimaNumber);
+    printf("Il numero totale di prodotti sotto la soglia e\': %d\n", numeroProdottiSottoSogliaMinima);
 
     /*   APERTURA DEL FILE numeroTotale.txt      */
     FILE *totalePtr;                        
@@ -112,7 +109,7 @@ int main(){
     }
     else{
         fprintf(totalePtr, "Il numero totale di prodotti disponibili in magazzino e\': %d\n", prodottiDisponibili);
-        fprintf(totalePtr, "Il numero totale di prodotti sotto la soglia e\': %d\n", prodottiSottoSogliaMinimaNumber);
+        fprintf(totalePtr, "Il numero totale di prodotti sotto la soglia e\': %d\n", numeroProdottiSottoSogliaMinima);
     }
     fclose(totalePtr);
 
@@ -124,7 +121,7 @@ int main(){
         exit(EXIT_FAILURE);
     }
     else
-        ordinaProdottiSottoSoglia(ProdottoPtr, soglia, daOrdinarePtr);
+        ordinaProdottiSottoSoglia(ProdottoPtr, sogliaMinima, daOrdinarePtr);
     
     printf("Bye Bye\n");
     fclose(daOrdinarePtr);
@@ -143,13 +140,12 @@ void inizializzaListaDaFile(ProdottoPtr *prodotto, int codiceProdotto, float pre
 //STAMPA LA LISTA DEI PRODOTTI IN BASE SOTTO LA SOGLIA
 //NON RICORSIVA IN CODA PER LA DECRESCENZA
 //RICORSIVA IN CODA PER LA CRESCENZA
-void stampaListaProdotti(ProdottoPtr *prodotto, int soglia)
-{
+void stampaListaProdotti(ProdottoPtr *prodotto, int sogliaMinima){
     if (*prodotto == NULL)
         return;
     else{
-        stampaListaProdotti(&((*prodotto)->prossimoProdotto), soglia);
-        if((*prodotto)->quantitaProdotto < soglia)
+        stampaListaProdotti(&((*prodotto)->prossimoProdotto), sogliaMinima);
+        if((*prodotto)->quantitaProdotto < sogliaMinima)
             printf("%d, %s, %.2f, %d \n", (*prodotto)->codiceProdotto, (*prodotto)->nomeProdotto, (*prodotto)->prezzoProdotto, (*prodotto)->quantitaProdotto);
         
     }
@@ -168,7 +164,7 @@ void cambiaQuantitaProdotto(ProdottoPtr *prodotto, int codiceProdotto){
             while(getchar()!= '\n');
         }
         (*prodotto)->quantitaProdotto = nuovaQuantitaProdotto;
-        printf("Dettaglio prodotto\n");   
+        printf("Dettagli prodotto\n");   
         printf("%d\t%s\t%.2f\t%d\n", (*prodotto)->codiceProdotto, (*prodotto)->nomeProdotto, (*prodotto)->prezzoProdotto, (*prodotto)->quantitaProdotto);
     }
     else    
@@ -188,7 +184,7 @@ void cambiaPrezzoProdotto(ProdottoPtr *prodotto, int codiceProdotto){
             while(getchar()!= '\n');
         }
         (*prodotto)->prezzoProdotto = nuovoPrezzoProdotto;
-        printf("Dettaglio prodotto\n");
+        printf("Dettagli prodotto\n");
         printf("%d\t%s\t%.2f\t%d\n", (*prodotto)->codiceProdotto, (*prodotto)->nomeProdotto, (*prodotto)->prezzoProdotto, (*prodotto)->quantitaProdotto);
     }
     else    
@@ -250,7 +246,6 @@ void eliminaProdotto(ProdottoPtr *prodotto, int codiceProdotto){
         printf("prodotto inesistente\n");
         return;
     }
-    //Se trova il prodotto lo elimina dalla lista
     else if((*prodotto)->codiceProdotto == codiceProdotto){
         printf("cancellazione di :");
         printf("%d\t%s\t%.2f\t%d\n", (*prodotto)->codiceProdotto, (*prodotto)->nomeProdotto, (*prodotto)->prezzoProdotto, (*prodotto)->quantitaProdotto);
@@ -264,14 +259,14 @@ void eliminaProdotto(ProdottoPtr *prodotto, int codiceProdotto){
         eliminaProdotto(&(*prodotto)->prossimoProdotto, codiceProdotto);
 }
 
+//Cerca un prodotto nella lista e stampa i dettagli
 void cercaProdotto(ProdottoPtr *prodotto, int codiceProdotto){
     if(*prodotto == NULL){
         printf("prodotto inesistente\n");
         return;
     }
-    //Se trova il prodotto, stampa i dettagli
     else if((*prodotto)->codiceProdotto == codiceProdotto){ 
-        printf("Dettaglio prodotto\n");
+        printf("Dettagli prodotto\n");
         printf("%d\t%s\t%.2f\t%d\n", (*prodotto)->codiceProdotto, (*prodotto)->nomeProdotto, (*prodotto)->prezzoProdotto, (*prodotto)->quantitaProdotto);
         return;
     }
@@ -280,8 +275,7 @@ void cercaProdotto(ProdottoPtr *prodotto, int codiceProdotto){
 }
 
 //Restituisce il numero di prodotti disponibili
-int numeroProdottiDisponibili(ProdottoPtr prodotto, int prodottiDisponibili)
-{
+int numeroProdottiDisponibili(ProdottoPtr prodotto, int prodottiDisponibili){
     if(prodotto == NULL)
         return prodottiDisponibili;
     else
@@ -289,28 +283,27 @@ int numeroProdottiDisponibili(ProdottoPtr prodotto, int prodottiDisponibili)
 }
 
 //Restituisce il numero di prodotti sotto soglia
-int prodottiSottoSogliaMinima(ProdottoPtr prodotto, int soglia, int prodottiSottoSoglia)
-{
+int prodottiSottoSogliaMinima(ProdottoPtr prodotto, int sogliaMinima, int prodottiSottoSoglia){
     if(prodotto == NULL)
         return prodottiSottoSoglia;
     else{
-        if((prodotto)->quantitaProdotto < soglia)
-            prodottiSottoSogliaMinima(prodotto->prossimoProdotto, soglia, prodottiSottoSoglia++);
+        if((prodotto)->quantitaProdotto < sogliaMinima)
+            prodottiSottoSogliaMinima(prodotto->prossimoProdotto, sogliaMinima, prodottiSottoSoglia++);
         else
-            prodottiSottoSogliaMinima(prodotto->prossimoProdotto, soglia, prodottiSottoSoglia);
+            prodottiSottoSogliaMinima(prodotto->prossimoProdotto, sogliaMinima, prodottiSottoSoglia);
     }
 }
 
 //Scrive sul file daOrdinare.bin i prodotti da ordinare
-void ordinaProdottiSottoSoglia(ProdottoPtr prodotto, int soglia, FILE *daOrdinare){
+void ordinaProdottiSottoSoglia(ProdottoPtr prodotto, int sogliaMinima, FILE *daOrdinare){
     if(prodotto == NULL)
         return;
     else{
-        if(prodotto->quantitaProdotto < soglia)
+        if(prodotto->quantitaProdotto < sogliaMinima)
             fprintf(daOrdinare, "%d\t%s\t%.2f\t%d /t da ordinare %d\n", prodotto->codiceProdotto, prodotto->nomeProdotto,
-                 prodotto->prezzoProdotto, prodotto->quantitaProdotto, (soglia - prodotto->quantitaProdotto + 1));
+                 prodotto->prezzoProdotto, prodotto->quantitaProdotto, (sogliaMinima - prodotto->quantitaProdotto + 1));
         else    
-            ordinaProdottiSottoSoglia(prodotto->prossimoProdotto, soglia, daOrdinare);
+            ordinaProdottiSottoSoglia(prodotto->prossimoProdotto, sogliaMinima, daOrdinare);
     }
 }
 

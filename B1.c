@@ -15,9 +15,9 @@ typedef Occorrenze *occorrenzePtr;
 
 int inputNumericoPositivo();      
 int radice(int, int);   //Calcola radice perfetta
-void insertOccorrenze(occorrenzePtr*, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna);   //INSERISCE NELLA LISTA OCCORRENZE 
-void stampaOccorrenze(occorrenzePtr);                                                                       //STAMPA I RISULTATI 
-void assegnaValori(occorrenzePtr*, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna);      //ASSEGNA I DATI NECESSARI PER L'OUTPUT
+void inserisciOccorrenzeInLista(occorrenzePtr*, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna);   
+void stampaOccorrenze(occorrenzePtr);   //Stampa Output                                                                
+void assegnaValoriOccorrenza(occorrenzePtr*, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna);  
 
 int main(int argc, const char *argv[]){
     FILE *filePtr;             
@@ -26,65 +26,57 @@ int main(int argc, const char *argv[]){
         exit(EXIT_FAILURE);
     }
 
-    int cont = 0;           //contatore per il numero di elementi
-    int temp = 0;           //variabile temporanea per salvare l'elemento letto
+    int numeroElementi = 0;           
+    int elementoLetto = 0;      
     int dimensioneMatrice = 0;      
-    int i,j;                //contatori
+    int i, j;             
 
-    /*       CONTA QUANTI ELEMENTI SONO PRESENTI NEL FILE E NE CALCOLA LA RADICE    */
-    while(fscanf(filePtr,"%d", &temp) == 1){
-        cont++;
+    //Conta quanti elementi sono presenti e ne calcola la radice, e una volta contati torno all'inizio del file
+    while(fscanf(filePtr,"%d", &elementoLetto) == 1){
+        numeroElementi++;
     }
     rewind(filePtr);
 
-    //Se il file non ha radice perfetta o < 4 il programma termina
-    dimensioneMatrice = radice(cont, 1); 
+    //Se il file non ha radice perfetta o < 4, il programma termina
+    dimensioneMatrice = radice(numeroElementi, 1); 
     if(dimensioneMatrice < 4){
         printf("File non valido.\n");
         exit(EXIT_FAILURE);
     }
 
-    /*       LETTURA FILE E INSERIMENTO DATI NELLA MATRICE      */
-
+    //Lettura file e inserimento dati nella matrice
     int **matriceInput = (int**)calloc(dimensioneMatrice, sizeof(int*));
-    for(i = 0; i < dimensioneMatrice; i++)
-    {
+    for(i = 0; i < dimensioneMatrice; i++){
         matriceInput[i] = (int*)calloc(dimensioneMatrice, sizeof(int));
-        for(j = 0; j < dimensioneMatrice; j++)
-        {
+        for(j = 0; j < dimensioneMatrice; j++){
             fscanf(filePtr,"%d", &matriceInput[i][j]);
             printf("%d ", matriceInput[i][j]);
         }
         printf("\n");
     }
     fclose(filePtr); 
-
-    /*       FINE LETTURA       */
   
-    
     printf("Inserire M: \n");
-    int m = inputNumericoPositivo();       //LETTURA M
-    while(m > dimensioneMatrice)              //SE MAGGIORE DELLA dimensioneMatriceENSIONE RILEGGE UNO NUOVO
-    {
+    int m = inputNumericoPositivo();  
+    while(m > dimensioneMatrice){ 
         printf("M deve essere minore di N");
         m = inputNumericoPositivo();
     }
 
-
-    /*       RICERCA OCCORRENZE     */
-    /*       PRIMA IN COLONNA E POI IN RIGA     */
-
+    //Ricerca occorrenze, prima in colonna e poi in riga
     int valoreTemporaneoColonna = 0, valoreTemporaneoRiga = 0;    //Per contenere il valore della sequenza
     int riga, colonna;  //Indici
     int posizioneColonna = 0, posizioneRiga = 0;    //Dove Inizia l'occorrenza
     int contatoreOccorrenzeColonna, contatoreOccorrenzeRiga;                  
     Occorrenze *occPtr = NULL;    
 
-    //tengo un indice che individua la posizione iniziale laddove inizia l'occorrenza
-    //una volta trovato un numero diverso dalla posizione iniziale verifico se la consecutivita' supera l'M
-    //se lo supera mette le informazioni necessari nella lista
-    //altrimenti resetta l'indice alla posizione riga (usando il contatore)
+    /*
+        Tengo un indice che individua la posizione iniziale laddove inizia l'occorrenza.
+        Una volta trovato un numero diverso dalla posizione iniziale verifico se la consecutivita' supera M:
+            -Se lo supera mette le informazioni necessarie nella lista
+            -Altrimenti resetta l'indice alla posizione riga
 
+    */
     for(colonna = 0; colonna < dimensioneMatrice; colonna++){
         //A ogni iterazione resetto i contatori
         contatoreOccorrenzeColonna = 1;    
@@ -95,31 +87,32 @@ int main(int argc, const char *argv[]){
             if(matriceInput[riga][colonna] == matriceInput[posizioneColonna][colonna]){
                 contatoreOccorrenzeColonna += 1;
                 valoreTemporaneoColonna = matriceInput[posizioneColonna][colonna];
-                if((riga == (dimensioneMatrice - 1)) && (contatoreOccorrenzeColonna >= m)){   //SE L'INDICE ARRIVA ALL'ULTIMO ELEMENTO, contatoreOccorrenzeRigaOLLA SE IL CONTATORE SUPERA M, SE SI LO METTE NELLA LISTA, ALTRIMENTI NULLA
-                    insertOccorrenze(&occPtr,contatoreOccorrenzeColonna, colonna, posizioneColonna, valoreTemporaneoColonna, 1);
+                //Se l-indice arriva all'ultimo elemento, controlla se il contatore supera M. Se si mette in lista, altrimenti non fa nulla
+                if((riga == (dimensioneMatrice - 1)) && (contatoreOccorrenzeColonna >= m)){ 
+                    inserisciOccorrenzeInLista(&occPtr,contatoreOccorrenzeColonna, colonna, posizioneColonna, valoreTemporaneoColonna, 1);
                     contatoreOccorrenzeColonna = 1;
                 }
             }
             else{
                 if(contatoreOccorrenzeColonna >= m)
-                    insertOccorrenze(&occPtr,contatoreOccorrenzeColonna, colonna, posizioneColonna, valoreTemporaneoColonna, 1);
+                    inserisciOccorrenzeInLista(&occPtr,contatoreOccorrenzeColonna, colonna, posizioneColonna, valoreTemporaneoColonna, 1);
 
                 posizioneColonna = riga;
                 contatoreOccorrenzeColonna = 1;
             }
 
             //Ricerca in riga, cambiano solo gli indici
-            if(matriceInput[colonna][riga] == matriceInput[c][posizioneRiga]){
+            if(matriceInput[colonna][riga] == matriceInput[colonna][posizioneRiga]){
                 contatoreOccorrenzeRiga += 1;
-                valoreTemporaneoRiga = matriceInput[c][posizioneRiga];
+                valoreTemporaneoRiga = matriceInput[colonna][posizioneRiga];
                 if((riga == (dimensioneMatrice - 1)) && (contatoreOccorrenzeRiga >= m)){
-                    insertOccorrenze(&occPtr, contatoreOccorrenzeRiga, colonna, posizioneRiga, valoreTemporaneoRiga, 0);
+                    inserisciOccorrenzeInLista(&occPtr, contatoreOccorrenzeRiga, colonna, posizioneRiga, valoreTemporaneoRiga, 0);
                     contatoreOccorrenzeRiga = 1;
                 }
             }
             else{
                 if(contatoreOccorrenzeRiga >= m)
-                    insertOccorrenze(&occPtr, contatoreOccorrenzeRiga, colonna, posizioneRiga, valoreTemporaneoRiga, 0);
+                    inserisciOccorrenzeInLista(&occPtr, contatoreOccorrenzeRiga, colonna, posizioneRiga, valoreTemporaneoRiga, 0);
                 
                 posizioneRiga = riga;
                 contatoreOccorrenzeRiga = 1;
@@ -142,44 +135,44 @@ void stampaOccorrenze(occorrenzePtr oPtr)     {
     }
 }
 
-//TANTI CASI DA ContrOLLARE
+/*
+    Molteplici casi da controllare:
+        -Se la lista e' vuota, inserisce un elemento. Altrimenti controlla se il numero di occorrenze che sta leggendo e' minore, maggiore o uguale.
+            -Se minore inserisce nella lista
+            -Se maggiore va al prossimo elemento e ricomincia i controlli
+            -Se uguale va a controllare se l'elemento entrante e' dello stesso tipo di quello presente
+        -Se l'elemento entrante si tratta di una colonna e l'elemento presente non lo e', viene inserito
+        -Se sono dello stesso tipo controlla la posizione di chi inizia prima
+            -Se l'elemento entrante inizia prima, viene inserito, altrimenti va al prossimo elemento della lista
+            -Se l'elemento entrante si tratta di una riga e l'elemento presente non lo e', va al prossimo elemento della lista
 
-//SE LA LISTA VUOTA INSERISCE UN ELEMENTO
-//ALTRIMENTI ContrOLLA SE IL NUMERO DI OCCORRENZE CHE STA LEGGENDO E' MINORE O MAGGIORE O UGUALE
-    //SE MINORE LO INSERISCE NELLA LISTA
-    //SE MAGGIORE VA AL PROSSIMO ELEMENTO E RICOMINCIA I ContrOLLI
-    //SE UGUALE VA A ContrOLLARE SE L'ELEMENTO ENTRANTE E' DELLO STESSO TIPO DI QUELLO PRESENTE
-        //SE L'ELEMENTO ENTRATE SI TRATTA DI UNA COLONNA E L'ELEMENTO PRESENTE NON LO E', VIENE INSERITO
-        //SE SONO DELLO STESSO TIPO ControLLA LA POSIZIONE DI CHI INIZIA PRIMA
-            //SE L'ELEMENTO ENTRATE INIZIA PRIMA VIENE INSERITO
-            //ALTRIMENTI VA AL PROSSIMO ELEMENTO DELLA LISTA
-        //SE L'ELEMENTO ENTRANTE SI TRATTA DI UNA RIGA E L'ELEMENTO PRESENTE NON LO E', VA AL PROSSIMO ELEMENTO DELLA LISTA
-void insertOccorrenze(occorrenzePtr *oPtr, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna){
+ */
+void inserisciOccorrenzeInLista(occorrenzePtr *oPtr, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna){
     if(*oPtr == NULL)
-        assegnaValori(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
+        assegnaValoriOccorrenza(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
 
     else if((*oPtr)->numeroOccorrenza < numeroOccorrenze)
-        assegnaValori(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
+        assegnaValoriOccorrenza(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
     
     else if((*oPtr)->numeroOccorrenza == numeroOccorrenze){
         if((colonna > (*oPtr)->colonna))
-            assegnaValori(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
+            assegnaValoriOccorrenza(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
 
         else if(colonna == (*oPtr)->colonna){
             if(posizione1 > (*oPtr)->posizione1)
-                assegnaValori(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
+                assegnaValoriOccorrenza(oPtr, numeroOccorrenze, posizione1, posizione2, valore, colonna);
             else
-                insertOccorrenze((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
+                inserisciOccorrenzeInLista((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
         }
         else
-            insertOccorrenze((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
+            inserisciOccorrenzeInLista((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
     }
     else
-        insertOccorrenze((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
+        inserisciOccorrenzeInLista((&(*oPtr)->prossimaOcc), numeroOccorrenze, posizione1, posizione2, valore, colonna);
 }
 
 //Inserisce i valore in lista
-void assegnaValori(occorrenzePtr *oPtr, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna){
+void assegnaValoriOccorrenza(occorrenzePtr *oPtr, int numeroOccorrenze, int posizione1, int posizione2, int valore, int colonna){
     occorrenzePtr nuovoPtr = malloc(sizeof(Occorrenze));
     if(nuovoPtr != NULL){
         nuovoPtr->numeroOccorrenza = numeroOccorrenze;

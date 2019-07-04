@@ -153,9 +153,9 @@ void riempiGrigliaPosizioniPartenza(partenzaPtr *listaPtr, char nomePilota[], ch
     }
 }
 
-void listaOrdinataPiloti(listaPtr *listaPtr, char nomePilota[], int ore, int minuti, int secondi, int millisecondi){
+void listaOrdinataPiloti(listaPtr *lPtr, char nomePilota[], int ore, int minuti, int secondi, int millisecondi){
     //Inserisco i dati nella lista se vuota
-    if(*listaPtr == NULL){
+    if(*lPtr == NULL){
         listaPtr nuovoPtr = malloc(sizeof(lista));
         if(nuovoPtr == NULL){
             printf("memoria insufficiente.\n");
@@ -168,13 +168,13 @@ void listaOrdinataPiloti(listaPtr *listaPtr, char nomePilota[], int ore, int min
             nuovoPtr->secondi = secondi;
             nuovoPtr->millisecondi = millisecondi;
             nuovoPtr->prossimalista = NULL;
-            (*listaPtr) = nuovoPtr;
+            (*lPtr) = nuovoPtr;
         }
     }
     //Altrimenti controllo se si tratta di tempi nulli
     else{
         //Se i pilota ha tempi 0:0:0.0 allora inserisco i dati 
-        if((0 == (*listaPtr)->ore) && (0 == (*listaPtr)->minuti) && (0 == (*listaPtr)->secondi) && (0 == (*listaPtr)->millisecondi)){
+        if((0 == (*lPtr)->ore) && (0 == (*lPtr)->minuti) && (0 == (*lPtr)->secondi) && (0 == (*lPtr)->millisecondi)){
             listaPtr nuovoPtr = malloc(sizeof(lista));
             if(nuovoPtr == NULL){
                 printf("memoria insufficiente.\n");
@@ -186,12 +186,12 @@ void listaOrdinataPiloti(listaPtr *listaPtr, char nomePilota[], int ore, int min
                 nuovoPtr->minuti = minuti;
                 nuovoPtr->secondi = secondi;
                 nuovoPtr->millisecondi = millisecondi;
-                nuovoPtr->prossimalista = *listaPtr;
-                (*listaPtr) = nuovoPtr;
+                nuovoPtr->prossimalista = *lPtr;
+                (*lPtr) = nuovoPtr;
             }
         }  
         else
-            listaOrdinataPiloti(&((*listaPtr)->prossimalista), nomePilota, ore, minuti, secondi, millisecondi);
+            listaOrdinataPiloti(&((*lPtr)->prossimalista), nomePilota, ore, minuti, secondi, millisecondi);
     }
 }
 

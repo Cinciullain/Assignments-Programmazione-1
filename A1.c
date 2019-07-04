@@ -19,7 +19,7 @@ int main(){
 
     int (*puntatore_funzioni[NUMERO_FUNZIONI])() = {nuovoNumero, stampaRappresentazioneC2, calcolaOpposto, stampaRappresentazioneC2Opposto, esci};
                                   
-    for( ; ;){
+    for(;;){
         printf("Scegli un\'opzione: \n");
         printf("\t1) Inserisci un nuovo numero.\n");
         printf("\t2) Stampa rappresentazione in complemento a due.\n");
@@ -51,16 +51,18 @@ int nuovoNumero(int *numero){
 
 int stampaRappresentazioneC2(int numero){
     printf("La rappresentazione di %d in complemento a due (MSB) è: ", numero);
-    int maschera[NUMERO_BIT] = {};
+    int maschera[NUMERO_BIT] = {}; //Crea la maschera di 32 bit tutti a 0
+
+    //Genero la rappresentazione
 	for(int i = 0; numero > 0; i++) {
 		maschera[i] = numero % 2;
 		numero = numero / 2;
 	}
 
+    //Metto gli spazi ogni 4 bit
 	for(int i = NUMERO_BIT; i > 0; i--){
 		if(i%4 == 0 && i != NUMERO_BIT)
 			printf(" ");
-
 		printf("%d", maschera[i - 1]);
 	}
 
@@ -79,54 +81,23 @@ int calcolaOpposto(int numero){
 }
 
 int stampaRappresentazioneC2Opposto(int numero){
-    /* printf("La rappresentazione dell\'opposto di %d in complemento a due (MSB) è: ", numero);
-    if(numero != 0)
-        numero*= -1;
-    int maschera[NUMERO_BIT] = {};
-	for(int i = 0; numero > 0; i++) {
-		maschera[i] = numero % 2;
-		numero = numero / 2;
-	}
-    if(numero != 0){
-        for(int i = NUMERO_BIT; i > 0; i--){
-            if(i%4 == 0 && i != NUMERO_BIT)
-                printf(" ");
-            if(maschera[i - 1] == 0)
-                printf("1");
-            else
-                printf("0");
+    int contatore = 1;     //Per separare i bit in gruppi di 4
+    int temp = numero * -1;     //Calcola il numero opposto
 
-        }
-    }
-    else{
-        for(int i = NUMERO_BIT; i > 0; i--){
-            if(i%4 == 0 && i != NUMERO_BIT)
-                printf(" ");
-            
-            printf("0");
-        }
-    }
-
-	printf(" \n\n");
-    */
-    int j = 1;              //CONTATORE PER SEPARARE I BIT IN GRUPPI DI 4
-    int temp = numero * -1;     //CALCOLO DEL NUMERO OPPOSTO
-
-    //CONSULTARE LA FUNZIONE complementoA2 (riga 99)
-    unsigned int maschera = 1 << (NUMERO_BIT-1);
+    //Creo la maschera per fare il confronto bit a bit
+    unsigned int maschera = 1 << (NUMERO_BIT-1); //La maschera diventa 1000 0000 0000 0000 0000 0000 0000 0000
     printf("La rappresentazione dell\'opposto di %d in complemento a due (MSB) è: ", numero);
-    for(int i = 0; i < NUMERO_BIT; i++)
-    {
+    
+    //Per ogni bit fa il confronto e a ogni iterazione li sposta di una posizione
+    for(int i = 0; i < NUMERO_BIT; i++){
         putchar(temp & maschera ? '1' : '0');
         temp <<= 1;
-        if(0 == j % 4)// SE J E' DIVISIBILE PER 4 ALLORA METTE UNO SPAZIO
-        {
+        if(0 == contatore % 4)//Mette uno spazio ogni 4 bit
             printf(" ");
-        }
-        j++;
+
+        contatore++;
     }
     printf("\n\n");
-
 	return 0;
 }
 

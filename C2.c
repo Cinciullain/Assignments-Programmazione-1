@@ -33,7 +33,8 @@ void getParole(FILE *fPtr, ParolaPtr *prima, unsigned int *percentuale){
     while (fscanf(fPtr, "%[A-zàèìòù]%*[^A-zàèìòù]", stringaTemporanea) >= 1){
         if(strlen(stringaTemporanea) == 0) 
             continue;
-        for(unsigned int i = 0; i < strlen(stringaTemporanea); i++){ //I caratteri maiuscoli li rendo minuscoli
+        //I caratteri maiuscoli li rendo minuscoli
+        for(unsigned int i = 0; i < strlen(stringaTemporanea); i++){ 
             if(stringaTemporanea[i] <= 90)
                 stringaTemporanea[i] += 32;
         }

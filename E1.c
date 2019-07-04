@@ -199,6 +199,7 @@ void secondaVerifica(char *stringa){
 }
 
 void finale(){
-	printf("stringa appartenente al linguaggio\nsottostringa abDD presente");
+	printf("stringa appartenente al linguaggio\n");
+	printf("sottostringa abDD presente");
 	exit(0);
 }

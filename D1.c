@@ -26,12 +26,12 @@ int prodottiSottoSogliaMinima(ProdottoPtr, int, int);   //Restituisce il numero 
 void ordinaProdottiSottoSoglia(ProdottoPtr, int soglia, FILE*);    //Scrive nel file i prodotti sotto soglia da ordinare
  
 int main(){
-    srand(10);                                  //seme per la pseudocasualita'
-    FILE *filePtr;                                 //puntatore al file di input elenProdotti.csv
+    srand(10);   //seme per la pseudocasualita'
+    FILE *filePtr;     //puntatore al file di input elenProdotti.csv
     filePtr = fopen("elencoProdotti.csv", "r");    
     Prodotto *ProdottoPtr = NULL;           
 
-    /*   LETTURA DAL FILE    */
+    //Lettura da file
     if(filePtr == NULL){   
         printf("impossibile aprire il file");
         exit(EXIT_FAILURE);
@@ -41,26 +41,26 @@ int main(){
         float prezzoProdotto = 0;                        
         char nomeProdotto[11];                          
         while(!feof(filePtr)){
-            if(fscanf(filePtr,"%d %s %f\n", &codiceProdotto, nomeProdotto, &prezzoProdotto) < 3){  //se il file non ha campi formattati bene esce dal programma
+            //Se il file non ha campi formattati adeguatamente esce dal programma
+            if(fscanf(filePtr,"%d %s %f\n", &codiceProdotto, nomeProdotto, &prezzoProdotto) < 3){  
                 printf("file non formattato bene.\n");
                 printf("%d,%s,%f\n", codiceProdotto, nomeProdotto, prezzoProdotto);
                 exit(EXIT_FAILURE);
             }
-            //inserisce il prodotto
+            //Inserisce il prodotto
             inizializzaListaDaFile(&ProdottoPtr, codiceProdotto, prezzoProdotto, nomeProdotto); 
         }
         fclose(filePtr);
     }
-    /*   FINE LETTURA      */
 
-    /*   OPZIONI DELL'UTENTE   */
+    //Opzioni dell'utente
     int opzioneScelta = 0;                             
     int codiceProdotto = 0;                              
     int sogliaMinima = 10;  //Default: 10
     void (*funzioniPtr[6])() = {cambiaQuantitaProdotto, cambiaPrezzoProdotto, nuovoProdotto, eliminaProdotto, cercaProdotto, stampaListaProdotti};  //Array di puntatori a funzioni
 
-    do{
-        //MENU' TESTUALE 
+    //Menu testuale
+    do{ 
         printf("Scegliere un\'opzione(1 - variazione della quantita\' di un prodotto;");
         printf("2 - variazione del prezzo di un prodotto;");
         printf("3 - inserimento di un nuovo prodotto;");
@@ -69,13 +69,13 @@ int main(){
         printf("6 - Stampa prodotti sotto al soglia;");
         printf("7 - Esci)\n");
 
-        //lettura dell'opzione dell'utente
+        //Lettura dell'opzione dell'utente
         while((scanf("%d",&opzioneScelta) != 1) || (opzioneScelta < 1) || (opzioneScelta > 7)){
             printf("scelta non valida riprovare\n");
             while(getchar()!= '\n');
         }
 
-        //in base alla lettura chiama la funzione corrispondente
+        //Chiama la funzione corrispondente
         if((opzioneScelta > 0) && (opzioneScelta < 6)){
             printf("Inserisci il codice del prodotto:\n");
             while(scanf("%d", &codiceProdotto) != 1){
@@ -94,13 +94,13 @@ int main(){
         }
     }while(opzioneScelta != 7);
 
-    /*   UTENTE CHIEDE L'USCITA DAL PROGRAMMA      */
+    //L'utente ha chiesto l'uscita dal programma
     int prodottiDisponibili = numeroProdottiDisponibili(ProdottoPtr, 0);
-    int numeroProdottiSottoSogliaMinima = prodottiSottoSogliaMinima(ProdottoPtr,sogliaMinima, 0);    //numero di prodotti sotto soglia
+    int numeroProdottiSottoSogliaMinima = prodottiSottoSogliaMinima(ProdottoPtr,sogliaMinima, 0);    //Numero di prodotti sotto soglia
     printf("Il numero totale di prodotti disponibili in magazzino e\': %d\n", prodottiDisponibili); 
     printf("Il numero totale di prodotti sotto la soglia e\': %d\n", numeroProdottiSottoSogliaMinima);
 
-    /*   APERTURA DEL FILE numeroTotale.txt      */
+    //Apertura file numeroTotale.txt      
     FILE *totalePtr;                        
     totalePtr = fopen("numeroTotale.txt", "w");
     if(totalePtr == NULL){                     
@@ -113,7 +113,7 @@ int main(){
     }
     fclose(totalePtr);
 
-    /*   APERTURA DEL FILE daOrdinare.bin      */
+    //Apertura file daOrdinare.bin     
     FILE *daOrdinarePtr;                       
     daOrdinarePtr = fopen("daOrdinare.bin", "wb");
     if(daOrdinarePtr == NULL){
@@ -127,7 +127,7 @@ int main(){
     fclose(daOrdinarePtr);
 }
 
-//INSERIMENTO DEL PRODOTTO CON CODIDE CRESCENTE
+//Inserimento del prodotto con codice crescente
 void inizializzaListaDaFile(ProdottoPtr *prodotto, int codiceProdotto, float prezzoProdotto, char nomeProdotto[]){
     if(*prodotto == NULL)
         assegnaValoriProdotto(prodotto, codiceProdotto, prezzoProdotto, nomeProdotto);
@@ -137,9 +137,11 @@ void inizializzaListaDaFile(ProdottoPtr *prodotto, int codiceProdotto, float pre
         inizializzaListaDaFile(&((*prodotto)->prossimoProdotto),codiceProdotto, prezzoProdotto, nomeProdotto);
 }
 
-//STAMPA LA LISTA DEI PRODOTTI IN BASE SOTTO LA SOGLIA
-//NON RICORSIVA IN CODA PER LA DECRESCENZA
-//RICORSIVA IN CODA PER LA CRESCENZA
+/*
+    Stampa la lista dei prodotti in base sotto la soglia
+        -Non ricorsiva in coda per la decrescenza
+        -Ricorsiva in coda per la crescenza
+ */
 void stampaListaProdotti(ProdottoPtr *prodotto, int sogliaMinima){
     if (*prodotto == NULL)
         return;

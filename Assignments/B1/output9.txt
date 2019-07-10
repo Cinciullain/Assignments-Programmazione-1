@@ -1,0 +1,13 @@
+0 0 0 0 
+0 0 0 0 
+0 0 0 0 
+0 0 0 0 
+Inserire M: 
+Ci sono 4 occorrenze consecutive di 0 in colonna 3 a partire della riga 0
+Ci sono 4 occorrenze consecutive di 0 in colonna 2 a partire della riga 0
+Ci sono 4 occorrenze consecutive di 0 in colonna 1 a partire della riga 0
+Ci sono 4 occorrenze consecutive di 0 in colonna 0 a partire della riga 0
+Ci sono 4 occorrenze consecutive di 0 in riga 3 a partire della colonna 0
+Ci sono 4 occorrenze consecutive di 0 in riga 2 a partire della colonna 0
+Ci sono 4 occorrenze consecutive di 0 in riga 1 a partire della colonna 0
+Ci sono 4 occorrenze consecutive di 0 in riga 0 a partire della colonna 0

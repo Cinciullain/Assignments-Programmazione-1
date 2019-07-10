@@ -1,0 +1,2 @@
+Il numero totale di prodotti disponibili in magazzino e': 20
+Il numero totale di prodotti sotto la soglia e': 7

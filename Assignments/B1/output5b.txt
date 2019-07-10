@@ -1,0 +1,9 @@
+0 0 0 0 0 
+0 0 0 0 0 
+0 0 0 0 0 
+22 22 22 2 2 
+1 2 3 4 5 
+Inserire M: 
+Ci sono 5 occorrenze consecutive di 0 in riga 2 a partire della colonna 0
+Ci sono 5 occorrenze consecutive di 0 in riga 1 a partire della colonna 0
+Ci sono 5 occorrenze consecutive di 0 in riga 0 a partire della colonna 0

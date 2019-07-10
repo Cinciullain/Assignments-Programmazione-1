@@ -1,0 +1,6 @@
+4 4 4 0 
+2 3 7 0 
+1 2 4 1 
+0 0 1 1 
+Inserire M: 
+Ci sono 3 occorrenze consecutive di 4 in riga 0 a partire della colonna 0

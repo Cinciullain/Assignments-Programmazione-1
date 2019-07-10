@@ -1,0 +1,30 @@
+Inserisci un numero intero: Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  La rappresentazione di 3 in complemento a due (MSB) è: 0000 0000 0000 0000 0000 0000 0000 0011 
+
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  L'opposto di 3 è -3
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  La rappresentazione dell'opposto di 3 in complemento a due (MSB) è: 1111 1111 1111 1111 1111 1111 1111 1101 
+
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  Bye

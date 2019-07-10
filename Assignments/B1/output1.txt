@@ -1,0 +1,8 @@
+1 0 4 0 
+2 3 4 9 
+1 3 4 5 
+0 0 1 0 
+Inserire M: 
+Ci sono 3 occorrenze consecutive di 4 in colonna 2 a partire della riga 0
+Ci sono 2 occorrenze consecutive di 3 in colonna 1 a partire della riga 1
+Ci sono 2 occorrenze consecutive di 0 in riga 3 a partire della colonna 0

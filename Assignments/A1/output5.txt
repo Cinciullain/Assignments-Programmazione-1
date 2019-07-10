@@ -1,0 +1,29 @@
+Inserisci un numero intero: Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  La rappresentazione di -2147483647 in complemento a due (MSB) è: 1000 0000 0000 0000 0000 0000 0000 0001 
+
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  Inserisci un numero intero: Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  La rappresentazione dell'opposto di 136 in complemento a due (MSB) è: 1111 1111 1111 1111 1111 1111 0111 1000 
+
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  Bye

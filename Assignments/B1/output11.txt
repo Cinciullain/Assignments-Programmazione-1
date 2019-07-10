@@ -1,0 +1,10 @@
+11 22 22 41 
+1 3 5 5 
+3 4 5 6 
+4 5 6 6 
+Inserire M: 
+Ci sono 2 occorrenze consecutive di 6 in colonna 3 a partire della riga 2
+Ci sono 2 occorrenze consecutive di 5 in colonna 2 a partire della riga 1
+Ci sono 2 occorrenze consecutive di 6 in riga 3 a partire della colonna 2
+Ci sono 2 occorrenze consecutive di 5 in riga 1 a partire della colonna 2
+Ci sono 2 occorrenze consecutive di 22 in riga 0 a partire della colonna 1

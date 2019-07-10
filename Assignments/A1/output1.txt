@@ -1,0 +1,22 @@
+Inserisci un numero intero: Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  L'opposto di 1 è -1
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  La rappresentazione dell'opposto di 1 in complemento a due (MSB) è: 1111 1111 1111 1111 1111 1111 1111 1111 
+
+Scegli un'opzione:
+	1) Inserisci un nuovo numero.
+	2) Stampa rappresentazione in complemento a due.
+	3) Calcola opposto.
+	4) Stampa rappresentazione in complemento a due dell'opposto.
+	5) Esci.
+Scelta:  Bye
